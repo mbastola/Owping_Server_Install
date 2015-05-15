@@ -10,7 +10,8 @@ To unzip the contents to /etc/owping/ folder
 
 <code>
 tar -zxvf master.tar.gz
+</code>
 
+<code>
 mv Owping-Server-Install-master /etc/owping
-
 <\code>
