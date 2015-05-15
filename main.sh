@@ -1,10 +1,10 @@
 #!/bin/bash
 
-fileList="/usr/local/bin/owping/pies.txt"
+fileList="/etc/owping/pies.txt"
 ls "/var/log/owlogs/" > $fileList
 while read line           
 do
-    cd /usr/local/bin/owping/
+    cd /etc/owping/
     mkdir -p $line
     fileDate="/etc/owping/$line/outDate.txt"
     fileTime="/etc/owping/$line/outTime.txt"
@@ -19,7 +19,7 @@ do
     else
 	(umask 000 ; touch $fileOut3)
 	echo "#!/bin/bash" > $fileOut3
-	echo "#This script run every 5 seconds\n" > $fileOut3
+	echo "#This script run every 5 seconds\n" >> $fileOut3
 	chmod u+x $fileOut3
     fi
     if [ -e "$fileDate" ];then
@@ -55,6 +55,6 @@ do
     date=$(cat "$fileDate")
     time=$(cat "$fileTime")
     opt=$(cat "$fileOpt")
-    echo "$(/bin/sh /usr/local/bin/owping/owplot.sh $line -t $time -d $date -x $opt)"
+    echo "$(/bin/sh /etc/owping/owplot.sh $line -t $time -d $date -x $opt)"
     done<$fileList
 rm $fileList
