@@ -4,27 +4,27 @@ fileList="/etc/owping/pies.txt"
 sourceDir="/var/log/owlogs/"
 mkdir -m 777 -p $sourceDir
 ls $sourceDir > $fileList
-ls "/var/log/owlogs/" > $fileList
-while read line
+fileOut1="/etc/owping/owcron"
+if [ -e "$fileOut1" ];then
+	fileFlag=0
+else
+    (umask 000 ; touch $fileOut1)
+    echo "#!/bin/bash" > $fileOut1
+    echo "#This script run every 5 seconds" >> $fileOut1
+    chmod u+x $fileOut1
+    echo $fileOut1 >> "/etc/rc.d/rc.local"
+fi
+while read line           
 do
-    cd /etc/owping/
+    cd /usr/local/bin/owping/
     mkdir -p $line
     fileDate="/etc/owping/$line/outDate.txt"
     fileTime="/etc/owping/$line/outTime.txt"
     fileOpt="/etc/owping/$line/outOpt.txt"
     fileStat="/etc/owping/$line/lastupdated.txt"
-    fileOut1="/etc/owping/$line/$line.js"
-    fileOut2="/etc/owping/owcron"
+    fileOut2="/etc/owping/$line/$line.js"
     fileOut3="/etc/owping/$line/plot.log"
     fileFlag=1
-    if [ -e "$fileOut2" ];then
-	fileFlag=0
-    else
-	(umask 000 ; touch $fileOut3)
-	echo "#!/bin/bash" > $fileOut3
-	echo "#This script run every 5 seconds" >> $fileOut3
-	chmod u+x $fileOut3
-    fi
     if [ -e "$fileDate" ];then
 	fileFlag=0
     else
@@ -48,12 +48,12 @@ do
     else
 	(umask 000 ; touch $fileStat)
     fi
-    if [ -e "$fileOut1" ];then
+    if [ -e "$fileOut2" ];then
 	fileFlag=0
     else
-	touch $fileOut1
+	touch $fileOut2
 	STR=$'while (sleep 5 && [ /tmp/.${line}_lastupdate -nt /etc/owping/$line/lastupdated.txt ] || ( /etc/owping/main.sh >> $fileOut3 ; touch /tmp/.${line}_lastupdate )) &\ndo\n\twait \$!\ndone\n'
-	echo  $STR >> $fileOut2
+	echo  $STR >> $fileOut1
     fi
     date=$(cat "$fileDate")
     time=$(cat "$fileTime")
