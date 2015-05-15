@@ -1,8 +1,11 @@
 #!/bin/bash
 
 fileList="/etc/owping/pies.txt"
+sourceDir="/var/log/owlogs/"
+mkdir -m 777 -p $sourceDir
+ls $sourceDir > $fileList
 ls "/var/log/owlogs/" > $fileList
-while read line           
+while read line
 do
     cd /etc/owping/
     mkdir -p $line
@@ -19,7 +22,7 @@ do
     else
 	(umask 000 ; touch $fileOut3)
 	echo "#!/bin/bash" > $fileOut3
-	echo "#This script run every 5 seconds\n" >> $fileOut3
+	echo "#This script run every 5 seconds" >> $fileOut3
 	chmod u+x $fileOut3
     fi
     if [ -e "$fileDate" ];then
