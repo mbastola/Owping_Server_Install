@@ -70,9 +70,11 @@ str="<html><head><meta charset=\"UTF-8\"><link type=\"text/css\" href=\"/owplot/
 		 fclose(\$file3);
                  \$updatetime=date('m/d/Y h:i:s a');
                  \$text4=\"\$updatetime\n\";
-                 \$file4= fopen(\"/etc/owping/$1/lastupdated.txt\",\"w\") or dieWithError(\"Unable to create file.\");
+                 \$file4= fopen(\"/etc/owping/lastupdated.txt\",\"w\") or dieWithError(\"Unable to create file.\");
 		 fwrite(\$file4, \$text4);
 		 fclose(\$file4);
+                 \$file5= fopen(\"/etc/owping/tk.txt\",\"w\") or dieWithError(\"Unable to create file.\");
+		 fwrite(\$file5, \"$1\n\");
                  sleep(10);
 		 ?> 
 		 <br>Note:
